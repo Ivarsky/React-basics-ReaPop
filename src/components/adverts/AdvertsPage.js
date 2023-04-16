@@ -1,28 +1,19 @@
+import { useEffect, useState } from 'react';
 import styles from  './styles.module.css';
+import { getLatestAdverts } from './service';
 
-console.log(styles);
-const adverts = [
-  {
-    productname: 
-    'Nave espacial',
-    message: 'No usada fuera del sistema solar',
-    userId: 1,
-    price: 500000,
-    sell: true,
-    id: 1,
-  },
-  {
-    productname: 
-    'Mr.Meeseeks box',
-    message: 'Se busca una mr.meeseeks box',
-    userId: 1,
-    price: 1000000,
-    sell: false,
-    id: 2,
-  },
-];
+
 
 const AdvertsPage = () => {
+
+  const [adverts, setAdverts] = useState([]);
+  
+  useEffect(()=>{
+    getLatestAdverts().then(adverts => setAdverts(adverts));
+
+  }, []);
+
+
   return (
     <div className = {styles.advertsPage}>
       <ul>
