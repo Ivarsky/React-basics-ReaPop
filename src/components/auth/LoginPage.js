@@ -13,7 +13,7 @@ function LoginPage({ onLogin }) {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    await login({ credentials });
+    await login(credentials);
 
     //Estoy logueado
     onLogin();
@@ -41,14 +41,12 @@ function LoginPage({ onLogin }) {
           type="text"
           name="username"
           onChange={handleChange}
-          autoComplete={false}
           value={credentials.username}
         />
         <input
           type="password"
           name="password"
           onChange={handleChange}
-          autoComplete={false}
           value={credentials.password}
         />
         <Button type="submit" variant="primary" disabled={buttonDisabled}>

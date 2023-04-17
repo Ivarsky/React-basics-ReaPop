@@ -4,16 +4,25 @@ import './App.css';
 import Button from './components/shared/Button';
 import { useState } from 'react';
 
-function App() {
-  const [isLogged, setIsLogged] = useState(false);
+// eslint-disable-next-line react/prop-types
+function App({ isInitiallyLogged }) {
+  const [isLogged, setIsLogged] = useState(isInitiallyLogged);
 
   const handleLogin = () => {
     setIsLogged(true);
   };
 
+  const handleLogout = () => {
+    setIsLogged(false);
+  };
+
   return (
     <div className="App">
-      {isLogged ? <AdvertsPage /> : <LoginPage onLogin={handleLogin} />}
+      {isLogged ? (
+        <AdvertsPage onLogout={handleLogout} />
+      ) : (
+        <LoginPage onLogin={handleLogin} />
+      )}
       {/* <Button onClick={(event) => console.log(event)}>Click me!</Button> */}
     </div>
   );
