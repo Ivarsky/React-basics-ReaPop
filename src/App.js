@@ -3,6 +3,7 @@ import LoginPage from './components/auth/LoginPage';
 import './App.css';
 import Button from './components/shared/Button';
 import { useState } from 'react';
+import NewAdvertPage from './components/adverts/NewAdvertPage';
 
 // eslint-disable-next-line react/prop-types
 function App({ isInitiallyLogged }) {
@@ -19,7 +20,10 @@ function App({ isInitiallyLogged }) {
   return (
     <div className="App">
       {isLogged ? (
-        <AdvertsPage onLogout={handleLogout} />
+        <>
+          <AdvertsPage onLogout={handleLogout} />
+          <NewAdvertPage />
+        </>
       ) : (
         <LoginPage onLogin={handleLogin} />
       )}
