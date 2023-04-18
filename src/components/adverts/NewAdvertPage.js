@@ -1,8 +1,8 @@
 import Layout from '../Layout/Layout';
 
-const NewAdvertPage = () => {
+const NewAdvertPage = props => {
   return (
-    <Layout title="Publish your advert!">
+    <Layout title="Publish your advert!" {...props}>
       <div>New Advert Page</div>;
     </Layout>
   );
