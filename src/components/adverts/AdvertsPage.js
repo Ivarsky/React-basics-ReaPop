@@ -20,11 +20,13 @@ const AdvertsPage = props => {
   const [adverts, setAdverts] = useState([]);
 
   useEffect(() => {
-    setIsLoading(true);
-    getLatestAdverts().then(adverts => {
+    async function fetchData() {
+      setIsLoading(true);
+      const adverts = await getLatestAdverts();
       setAdverts(adverts);
       setIsLoading(false);
-    });
+    }
+    fetchData();
   }, []);
 
   return (
