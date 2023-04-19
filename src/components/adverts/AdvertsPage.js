@@ -3,6 +3,16 @@ import styles from './styles.module.css';
 import { getLatestAdverts } from './service';
 import Button from '../shared/Button';
 import Layout from '../Layout/Layout';
+import { Link } from 'react-router-dom';
+
+const EmptyList = () => (
+  <div>
+    <p>Be the first!</p>
+    <Button as={Link} to="/adverts/new">
+      Create Add
+    </Button>
+  </div>
+);
 
 // eslint-disable-next-line react/prop-types
 const AdvertsPage = props => {
@@ -20,14 +30,16 @@ const AdvertsPage = props => {
           <ul>
             {adverts.map(advert => (
               <li key={advert.id}>
-                `{advert.productname}
-                {advert.message}
-                {advert.price} Euros`
+                <Link to={`/adverts/${advert.id}`}>
+                  `{advert.productname}
+                  {advert.message}
+                  {advert.price} Euros`
+                </Link>
               </li>
             ))}
           </ul>
         ) : (
-          <Button>Be the first!</Button>
+          <EmptyList />
         )}
       </div>
     </Layout>

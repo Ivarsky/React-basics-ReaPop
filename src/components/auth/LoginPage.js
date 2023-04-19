@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import Button from '../shared/Button';
 import { login } from './service';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
 function LoginPage({ onLogin }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   // eslint-disable-next-line no-undef
   const [credentials, setCredentials] = useState({
     username: '',
@@ -12,11 +15,14 @@ function LoginPage({ onLogin }) {
 
   const handleSubmit = async event => {
     event.preventDefault();
-
     await login(credentials);
 
     //Estoy logueado
     onLogin();
+
+    //Redirect to ultima pagina o home
+    const to = location.state?.from?.pathname || '/';
+    navigate(to);
   };
 
   const handleChange = event => {

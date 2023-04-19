@@ -5,6 +5,7 @@ import { useState } from 'react';
 import NewAdvertPage from './components/adverts/NewAdvertPage';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import AdvertPage from './components/adverts/AdvertPage';
+import RequireAuth from './components/auth/RequireAuth';
 
 // eslint-disable-next-line react/prop-types
 function App({ isInitiallyLogged }) {
@@ -25,7 +26,9 @@ function App({ isInitiallyLogged }) {
         <Route
           path="/adverts/new"
           element={
-            <NewAdvertPage onLogout={handleLogout} isLogged={isLogged} />
+            <RequireAuth isLogged={isLogged}>
+              <NewAdvertPage onLogout={handleLogout} isLogged={isLogged} />
+            </RequireAuth>
           }
         />
         <Route
