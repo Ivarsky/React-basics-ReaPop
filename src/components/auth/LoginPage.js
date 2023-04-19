@@ -7,22 +7,35 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function LoginPage({ onLogin }) {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   // eslint-disable-next-line no-undef
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
   });
 
+  const resetError = () => {
+    setError(null);
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
-    await login(credentials);
 
-    //Estoy logueado
-    onLogin();
-
-    //Redirect to ultima pagina o home
-    const to = location.state?.from?.pathname || '/';
-    navigate(to);
+    resetError(), setIsLoading(true);
+    try {
+      await login(credentials);
+      setIsLoading(false);
+      //Logged In
+      onLogin();
+      //Redirect to ultima pagina o home
+      const to = location.state?.from?.pathname || '/';
+      navigate(to);
+    } catch (error) {
+      setError(error);
+      setIsLoading(false);
+    }
   };
 
   const handleChange = event => {
@@ -37,7 +50,8 @@ function LoginPage({ onLogin }) {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
-  const buttonDisabled = !credentials.username || !credentials.password;
+  const buttonDisabled =
+    isLoading || !credentials.username || !credentials.password;
 
   return (
     <div>
@@ -59,6 +73,11 @@ function LoginPage({ onLogin }) {
           Log In
         </Button>
       </form>
+      {error && (
+        <div onClick={resetError} className="loginPage-error">
+          {error.message}
+        </div>
+      )}
     </div>
   );
 }

@@ -16,32 +16,41 @@ const EmptyList = () => (
 
 // eslint-disable-next-line react/prop-types
 const AdvertsPage = props => {
+  const [isLoading, setIsLoading] = useState(true);
   const [adverts, setAdverts] = useState([]);
 
   useEffect(() => {
-    getLatestAdverts().then(adverts => setAdverts(adverts));
+    setIsLoading(true);
+    getLatestAdverts().then(adverts => {
+      setAdverts(adverts);
+      setIsLoading(false);
+    });
   }, []);
 
   return (
     <Layout title="Adverts List" {...props}>
-      <div className={styles.advertsPage}>
-        {/* eslint-disable-next-line no-extra-boolean-cast */}
-        {!!adverts.length ? (
-          <ul>
-            {adverts.map(advert => (
-              <li key={advert.id}>
-                <Link to={`/adverts/${advert.id}`}>
-                  `{advert.productname}
-                  {advert.message}
-                  {advert.price} Euros`
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <EmptyList />
-        )}
-      </div>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div className={styles.advertsPage}>
+          {/* eslint-disable-next-line no-extra-boolean-cast */}
+          {!!adverts.length ? (
+            <ul>
+              {adverts.map(advert => (
+                <li key={advert.id}>
+                  <Link to={`/adverts/${advert.id}`}>
+                    `{advert.productname}
+                    {advert.message}
+                    {advert.price} Euros`
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyList />
+          )}
+        </div>
+      )}
     </Layout>
   );
 };
