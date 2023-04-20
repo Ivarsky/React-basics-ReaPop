@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../shared/Button';
 import { login } from './service';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from './context';
 
 // eslint-disable-next-line react/prop-types
-function LoginPage({ onLogin }) {
+function LoginPage() {
+  const { onLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 

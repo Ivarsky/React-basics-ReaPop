@@ -6,6 +6,7 @@ import NewAdvertPage from './components/adverts/NewAdvertPage';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import AdvertPage from './components/adverts/AdvertPage';
 import RequireAuth from './components/auth/RequireAuth';
+import { AuthContext } from './components/auth/context';
 
 // eslint-disable-next-line react/prop-types
 function App({ isInitiallyLogged }) {
@@ -21,28 +22,26 @@ function App({ isInitiallyLogged }) {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-        <Route
-          path="/adverts/new"
-          element={
-            <RequireAuth isLogged={isLogged}>
-              <NewAdvertPage onLogout={handleLogout} isLogged={isLogged} />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/adverts"
-          element={<AdvertsPage onLogout={handleLogout} isLogged={isLogged} />}
-        />
-        <Route
-          path="/adverts/:advertId"
-          element={<AdvertPage onLogout={handleLogout} isLogged={isLogged} />}
-        />
-        <Route path="/" element={<Navigate to="/adverts" />} />
-        <Route path="/404" element={<div>404 | Not Found</div>} />
-        <Route path="*" element={<Navigate to="/404" />} />
-      </Routes>
+      <AuthContext.Provider
+        value={{ isLogged, onLogout: handleLogout, onLogin: handleLogin }}
+      >
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/adverts/new"
+            element={
+              <RequireAuth>
+                <NewAdvertPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/adverts" element={<AdvertsPage />} />
+          <Route path="/adverts/:advertId" element={<AdvertPage />} />
+          <Route path="/" element={<Navigate to="/adverts" />} />
+          <Route path="/404" element={<div>404 | Not Found</div>} />
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Routes>
+      </AuthContext.Provider>
     </div>
   );
 }

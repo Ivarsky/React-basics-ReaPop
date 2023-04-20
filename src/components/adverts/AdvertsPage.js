@@ -15,7 +15,7 @@ const EmptyList = () => (
 );
 
 // eslint-disable-next-line react/prop-types
-const AdvertsPage = props => {
+const AdvertsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [adverts, setAdverts] = useState([]);
 
@@ -30,7 +30,7 @@ const AdvertsPage = props => {
   }, []);
 
   return (
-    <Layout title="Adverts List" {...props}>
+    <Layout title="Adverts List">
       {isLoading ? (
         <div>Loading...</div>
       ) : (
