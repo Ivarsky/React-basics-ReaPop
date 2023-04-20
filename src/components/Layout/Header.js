@@ -2,12 +2,11 @@ import Button from '../shared/Button';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 import { logout } from '../auth/service';
 import { Link, NavLink } from 'react-router-dom';
-import { AuthContext } from '../auth/context';
-import { useContext } from 'react';
+import { useAuth } from '../auth/context';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
-  const { isLogged, onLogout } = useContext(AuthContext);
+  const { isLogged, onLogout } = useAuth();
 
   const handleLogoutClick = async () => {
     await logout();
