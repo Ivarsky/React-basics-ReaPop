@@ -34,13 +34,16 @@ const AdvertsPage = () => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className={styles.advertsPage}>
+        <div>
           {/* eslint-disable-next-line no-extra-boolean-cast */}
           {!!adverts.length ? (
             <ul>
               {adverts.map(advert => (
                 <li key={advert.id}>
-                  <Link to={`/adverts/${advert.id}`}>
+                  <Link
+                    to={`/adverts/${advert.id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
                     `{advert.productname}
                     {advert.message}
                     {advert.price} Euros`
