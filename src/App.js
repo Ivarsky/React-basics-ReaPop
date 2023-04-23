@@ -1,32 +1,35 @@
-import AdvertsPage from './components/adverts/AdvertsPage';
-import LoginPage from './components/auth/LoginPage';
 import './App.css';
-import NewAdvertPage from './components/adverts/NewAdvertPage';
 import { Route, Routes, Navigate } from 'react-router-dom';
-import AdvertPage from './components/adverts/AdvertPage';
 import RequireAuth from './components/auth/RequireAuth';
+import { Suspense, lazy } from 'react';
 
-// eslint-disable-next-line react/prop-types
+const AdvertsPage = lazy(() => import('./components/adverts/AdvertsPage'));
+const LoginPage = lazy(() => import('./components/auth/LoginPage'));
+const NewAdvertPage = lazy(() => import('./components/adverts/NewAdvertPage'));
+const AdvertPage = lazy(() => import('./components/adverts/AdvertPage'));
+
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/adverts/new"
-          element={
-            <RequireAuth>
-              <NewAdvertPage />
-            </RequireAuth>
-          }
-        />
-        <Route path="/adverts" element={<AdvertsPage />} />
-        <Route path="/adverts/:advertId" element={<AdvertPage />} />
-        <Route path="/" element={<Navigate to="/adverts" />} />
-        <Route path="/404" element={<div>404 | Not Found</div>} />
-        <Route path="*" element={<Navigate to="/404" />} />
-      </Routes>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="App">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/adverts/new"
+            element={
+              <RequireAuth>
+                <NewAdvertPage />
+              </RequireAuth>
+            }
+          />
+          <Route path="/adverts" element={<AdvertsPage />} />
+          <Route path="/adverts/:advertId" element={<AdvertPage />} />
+          <Route path="/" element={<Navigate to="/adverts" />} />
+          <Route path="/404" element={<div>404 | Not Found</div>} />
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Routes>
+      </div>
+    </Suspense>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './styles.module.css';
+//import styles from './styles.module.css';
 import { getLatestAdverts } from './service';
 import Button from '../shared/Button';
 import Layout from '../Layout/Layout';
