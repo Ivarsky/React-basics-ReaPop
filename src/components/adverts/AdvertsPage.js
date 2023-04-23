@@ -44,9 +44,8 @@ const AdvertsPage = () => {
                     to={`/adverts/${advert.id}`}
                     style={{ textDecoration: 'none' }}
                   >
-                    `{advert.productname}
-                    {advert.message}
-                    {advert.price} Euros`
+                    `{advert.productname}: {advert.message} {advert.price}{' '}
+                    Euros`
                   </Link>
                 </li>
               ))}
