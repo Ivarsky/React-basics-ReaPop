@@ -65,6 +65,7 @@ const AdvertsPage = () => {
                 <input
                   type="radio"
                   name="filter"
+                  checked={filter === undefined}
                   value={undefined}
                   onChange={() => setfilter(undefined)}
                 />
