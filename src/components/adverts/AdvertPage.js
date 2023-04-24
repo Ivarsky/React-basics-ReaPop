@@ -36,6 +36,7 @@ const AdvertPage = () => {
         <div>
           {advert && (
             <div>
+              <img src={`${advert.photo}`} />
               {`${advert.name}, 
             a ${advert.price} euros`}
             </div>
