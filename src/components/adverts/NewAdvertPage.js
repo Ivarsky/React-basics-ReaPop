@@ -1,12 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import Button from '../shared/Button';
-import Textarea from '../shared/Textarea';
 import { createAdvert } from './service';
 import { useState } from 'react';
-
-const MIN_CHARACTERS = 10;
-const MAX_CHARACTERS = 140;
 
 const NewAdvertPage = () => {
   const navigate = useNavigate();
@@ -42,17 +38,9 @@ const NewAdvertPage = () => {
 
     try {
       setIsLoading(true);
-      const advert = await createAdvert(
-        data,
-        { headers: { 'content-type': 'multipart/form-data' } },
-        //   {
-        //   //TODO: quitar el updated at
-        //   productname: nameContent,
-        //   message: messageContent,
-        //   price: priceContent,
-        //   sell: !!sellContent,
-        // }
-      );
+      const advert = await createAdvert(data, {
+        headers: { 'content-type': 'multipart/form-data' },
+      });
       setIsLoading(false);
       navigate(`/adverts/${advert.id}`);
     } catch (error) {

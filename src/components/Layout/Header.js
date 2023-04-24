@@ -21,7 +21,7 @@ const Header = () => {
         </div>
       </Link>
       <nav>
-        <NavLink to="/adverts/new">New tweet!</NavLink>|
+        <NavLink to="/adverts/new">Create new Advert!</NavLink>|
         <NavLink to="/adverts" end>
           See Latests adds!
         </NavLink>
