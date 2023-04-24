@@ -14,7 +14,6 @@ const EmptyList = () => (
   </div>
 );
 
-// eslint-disable-next-line react/prop-types
 const AdvertsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [adverts, setAdverts] = useState([]);

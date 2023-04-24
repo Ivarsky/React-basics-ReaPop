@@ -5,7 +5,8 @@ import client, {
 import storage from '../../utils/storage';
 
 export const login = credentials => {
-  return client.post('/auth/login', credentials).then(({ accessToken }) => {
+  //con swagger deberias de poner /api delante
+  return client.post('/api/auth/login', credentials).then(({ accessToken }) => {
     setAuthorizationHeader(accessToken);
     storage.set('auth', accessToken);
   });

@@ -14,9 +14,10 @@ function LoginPage() {
   const [error, setError] = useState(null);
   // eslint-disable-next-line no-undef
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: '',
   });
+  console.log(credentials);
 
   const resetError = () => {
     setError(null);
@@ -51,17 +52,17 @@ function LoginPage() {
   };
 
   const buttonDisabled =
-    isLoading || !credentials.username || !credentials.password;
+    isLoading || !credentials.email || !credentials.password;
 
   return (
     <div>
       <h1>Log in to your Account</h1>
       <form onSubmit={handleSubmit}>
         <input
-          type="text"
-          name="username"
+          type="email"
+          name="email"
           onChange={handleChange}
-          value={credentials.username}
+          value={credentials.email}
         />
         <input
           type="password"
