@@ -36,8 +36,7 @@ const AdvertPage = () => {
         <div>
           {advert && (
             <div>
-              {`${advert.productname}, 
-            ${advert.message}
+              {`${advert.name}, 
             a ${advert.price} euros`}
             </div>
           )}
