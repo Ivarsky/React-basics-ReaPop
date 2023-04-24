@@ -12,16 +12,12 @@ const NewAdvertPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [nameContent, setNameContent] = useState('');
-  const [messageContent, setMessageContent] = useState('');
   const [priceContent, setPriceContent] = useState('');
   const [sellContent, setSellContent] = useState('');
+  const [tagContent, setTagContent] = useState('');
 
   const handleChangeName = event => {
     setNameContent(event.target.value);
-  };
-
-  const handleChangeMessage = event => {
-    setMessageContent(event.target.value);
   };
 
   const handleChangePrice = event => {
@@ -32,25 +28,31 @@ const NewAdvertPage = () => {
     setSellContent(event.target.value);
   };
 
+  const handleChangeTag = event => {
+    setTagContent(event.target.value);
+    console.log(tagContent);
+  };
+
   const isDisabled =
-    !nameContent ||
-    !messageContent ||
-    !priceContent ||
-    !sellContent ||
-    isLoading;
+    !nameContent || !priceContent || !sellContent || !tagContent || isLoading;
 
   const handleSubmit = async event => {
     event.preventDefault();
+    const data = new FormData(event.target);
 
     try {
       setIsLoading(true);
-      const advert = await createAdvert({
-        //TODO: quitar el updated at
-        productname: nameContent,
-        message: messageContent,
-        price: priceContent,
-        sell: !!sellContent,
-      });
+      const advert = await createAdvert(
+        data,
+        { headers: { 'content-type': 'multipart/form-data' } },
+        //   {
+        //   //TODO: quitar el updated at
+        //   productname: nameContent,
+        //   message: messageContent,
+        //   price: priceContent,
+        //   sell: !!sellContent,
+        // }
+      );
       setIsLoading(false);
       navigate(`/adverts/${advert.id}`);
     } catch (error) {
@@ -58,8 +60,8 @@ const NewAdvertPage = () => {
         navigate('/login');
       }
     }
+    console.log(nameContent, priceContent, sellContent, tagContent);
   };
-  console.log(nameContent, messageContent, priceContent, sellContent);
 
   const buttonText = isLoading ? 'Loading' : 'Submit!';
 
@@ -75,15 +77,6 @@ const NewAdvertPage = () => {
             ></input>
           </div>
           <div>
-            <Textarea
-              minLength={MIN_CHARACTERS}
-              maxLength={MAX_CHARACTERS}
-              placeholder="Description"
-              name="message"
-              onChange={handleChangeMessage}
-            />
-          </div>
-          <div>
             <input
               type="number"
               step={0.01}
@@ -96,18 +89,46 @@ const NewAdvertPage = () => {
             <label>Sell</label>
             <input
               type="radio"
-              name="sell"
+              name="sale"
               value={true}
               onChange={handleChangeSell}
             ></input>
             <label>Buy</label>
             <input
               type="radio"
-              name="sell"
+              name="sale"
               value={false}
               onChange={handleChangeSell}
             ></input>
           </div>
+          <label>Lifestyle</label>
+          <input
+            type="radio"
+            name="tags"
+            value={'lifestyle'}
+            onChange={handleChangeTag}
+          ></input>
+          <label>Mobile</label>
+          <input
+            type="radio"
+            name="tags"
+            value={'mobile'}
+            onChange={handleChangeTag}
+          ></input>
+          <label>Motor</label>
+          <input
+            type="radio"
+            name="tags"
+            value={'motor'}
+            onChange={handleChangeTag}
+          ></input>
+          <label>Work</label>
+          <input
+            type="radio"
+            name="tags"
+            value={'work'}
+            onChange={handleChangeTag}
+          ></input>
           <div>
             <Button type="submit" disabled={isDisabled}>
               {buttonText}
