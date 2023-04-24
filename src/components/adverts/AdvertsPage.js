@@ -72,6 +72,7 @@ const AdvertsPage = () => {
               <ul>
                 {filteredAdverts.map(advert => (
                   <li key={advert.id}>
+                    <img src={`${advert.photo}`} placeholder="" />
                     <Link
                       to={`/adverts/${advert.id}`}
                       style={{ textDecoration: 'none' }}
