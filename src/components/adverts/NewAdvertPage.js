@@ -11,6 +11,7 @@ const NewAdvertPage = () => {
   const [priceContent, setPriceContent] = useState('');
   const [sellContent, setSellContent] = useState('');
   const [tagContent, setTagContent] = useState('');
+  const [photoContent, setPhotoContent] = useState('');
 
   const handleChangeName = event => {
     setNameContent(event.target.value);
@@ -27,6 +28,10 @@ const NewAdvertPage = () => {
   const handleChangeTag = event => {
     setTagContent(event.target.value);
     console.log(tagContent);
+  };
+
+  const handleChangePhoto = event => {
+    setPhotoContent(event.target.value);
   };
 
   const isDisabled =
@@ -48,7 +53,13 @@ const NewAdvertPage = () => {
         navigate('/login');
       }
     }
-    console.log(nameContent, priceContent, sellContent, tagContent);
+    console.log(
+      nameContent,
+      priceContent,
+      sellContent,
+      tagContent,
+      photoContent,
+    );
   };
 
   const buttonText = isLoading ? 'Loading' : 'Submit!';
@@ -71,6 +82,14 @@ const NewAdvertPage = () => {
               placeholder="Price in EUR"
               name="price"
               onChange={handleChangePrice}
+            ></input>
+          </div>
+          <div>
+            <label>Select image</label>
+            <input
+              type="file"
+              name="photo"
+              onChange={handleChangePhoto}
             ></input>
           </div>
           <div>
