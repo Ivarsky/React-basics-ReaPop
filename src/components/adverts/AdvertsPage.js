@@ -32,7 +32,7 @@ const AdvertsPage = () => {
   const filteredAdverts =
     filter === undefined
       ? adverts
-      : adverts.filter(advert => advert.sell === filter);
+      : adverts.filter(advert => advert.sale === filter);
 
   return (
     <Layout title="Adverts List">
