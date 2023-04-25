@@ -12,12 +12,17 @@ function LoginPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [checkBox, setCheckBox] = useState(false);
   // eslint-disable-next-line no-undef
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
   });
-  console.log(credentials);
+  const loginProps = {
+    credentials: credentials,
+    checkbox: checkBox,
+  };
+  console.log(loginProps);
 
   const resetError = () => {
     setError(null);
@@ -28,7 +33,7 @@ function LoginPage() {
 
     resetError(), setIsLoading(true);
     try {
-      await login(credentials);
+      await login(loginProps);
       setIsLoading(false);
       //Logged In
       onLogin();
@@ -49,6 +54,11 @@ function LoginPage() {
     //   setCredentials({...credentials, password: event.target.value});
     // }
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
+  };
+
+  const handleCheckbox = event => {
+    const { checked } = event.target;
+    setCheckBox(checked);
   };
 
   const buttonDisabled =
@@ -73,6 +83,10 @@ function LoginPage() {
         <Button type="submit" variant="primary" disabled={buttonDisabled}>
           Log In
         </Button>
+        <div>
+          <label>Keep me logged</label>
+          <input type="checkbox" checked={checkBox} onChange={handleCheckbox} />
+        </div>
       </form>
       {error && (
         <div onClick={resetError} className="loginPage-error">

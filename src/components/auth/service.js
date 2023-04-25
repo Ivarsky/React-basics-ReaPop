@@ -4,12 +4,14 @@ import client, {
 } from '../../api/client';
 import storage from '../../utils/storage';
 
-export const login = credentials => {
+export const login = loginProps => {
   //con swagger deberias de poner /api delante
-  return client.post('/api/auth/login', credentials).then(({ accessToken }) => {
-    setAuthorizationHeader(accessToken);
-    storage.set('auth', accessToken);
-  });
+  return client
+    .post('/api/auth/login', loginProps.credentials)
+    .then(({ accessToken }) => {
+      setAuthorizationHeader(accessToken);
+      loginProps.checkbox ? storage.set('auth', accessToken) : () => {};
+    });
 };
 
 export const logout = () => {

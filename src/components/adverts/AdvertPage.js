@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import { useEffect, useState } from 'react';
 import { deleteAdvert, getAdvert } from './service';
-import Button from '../shared/Button';
 import AlertButton from '../shared/AlertButton';
 
 const AdvertPage = () => {
