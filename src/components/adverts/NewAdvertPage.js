@@ -108,34 +108,15 @@ const NewAdvertPage = () => {
               onChange={handleChangeSell}
             ></input>
           </div>
-          <label>Lifestyle</label>
-          <input
-            type="radio"
-            name="tags"
-            value={'lifestyle'}
-            onChange={handleChangeTag}
-          ></input>
-          <label>Mobile</label>
-          <input
-            type="radio"
-            name="tags"
-            value={'mobile'}
-            onChange={handleChangeTag}
-          ></input>
-          <label>Motor</label>
-          <input
-            type="radio"
-            name="tags"
-            value={'motor'}
-            onChange={handleChangeTag}
-          ></input>
-          <label>Work</label>
-          <input
-            type="radio"
-            name="tags"
-            value={'work'}
-            onChange={handleChangeTag}
-          ></input>
+          <div>
+            <label>Tags</label>
+            <select name="tags" onChange={handleChangeTag}>
+              <option value={'lifestyle'}>Lifestyle</option>
+              <option value={'Mobile'}>Mobile</option>
+              <option value={'Motor'}>Motor</option>
+              <option value={'Work'}>Work</option>
+            </select>
+          </div>
           <div>
             <Button type="submit" disabled={isDisabled}>
               {buttonText}

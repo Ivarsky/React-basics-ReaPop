@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import { useEffect, useState } from 'react';
-import { getAdvert } from './service';
+import { deleteAdvert, getAdvert } from './service';
+import Button from '../shared/Button';
 
 const AdvertPage = () => {
   const params = useParams();
@@ -27,6 +28,14 @@ const AdvertPage = () => {
     fetchData();
   }, [params.advertId, navigate]);
 
+  const handleSubmit = async event => {
+    event.preventDefault();
+    //TODO: trycatch y confirmacion
+    await deleteAdvert(params.advertId);
+    const to = '/';
+    navigate(to);
+  };
+
   //TODO: MAQUETACION
   return (
     <Layout title="Advert detail">
@@ -38,11 +47,15 @@ const AdvertPage = () => {
             <div>
               <img src={`${advert.photo}`} />
               {`${advert.name}, 
-            a ${advert.price} euros`}
+            a ${advert.price} euros
+              Tag: ${advert.tags}`}
             </div>
           )}
         </div>
       )}
+      <Button type="submit" onClick={handleSubmit}>
+        DELETE
+      </Button>
     </Layout>
   );
 };
