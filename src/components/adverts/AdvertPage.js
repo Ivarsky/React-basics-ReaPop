@@ -30,7 +30,6 @@ const AdvertPage = () => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    //TODO: trycatch y confirmacion
     try {
       setIsLoading(true);
       await deleteAdvert(params.advertId);
