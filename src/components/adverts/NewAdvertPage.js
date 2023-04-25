@@ -10,7 +10,7 @@ const NewAdvertPage = () => {
   const [nameContent, setNameContent] = useState('');
   const [priceContent, setPriceContent] = useState('');
   const [sellContent, setSellContent] = useState('');
-  const [tagContent, setTagContent] = useState('');
+  const [tagContent, setTagContent] = useState('lifestyle');
   const [photoContent, setPhotoContent] = useState('');
 
   const handleChangeName = event => {

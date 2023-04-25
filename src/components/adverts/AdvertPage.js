@@ -3,6 +3,7 @@ import Layout from '../Layout/Layout';
 import { useEffect, useState } from 'react';
 import { deleteAdvert, getAdvert } from './service';
 import Button from '../shared/Button';
+import AlertButton from '../shared/AlertButton';
 
 const AdvertPage = () => {
   const params = useParams();
@@ -31,9 +32,17 @@ const AdvertPage = () => {
   const handleSubmit = async event => {
     event.preventDefault();
     //TODO: trycatch y confirmacion
-    await deleteAdvert(params.advertId);
-    const to = '/';
-    navigate(to);
+    try {
+      setIsLoading(true);
+      await deleteAdvert(params.advertId);
+      setIsLoading(false);
+      const to = '/';
+      navigate(to);
+    } catch (error) {
+      if (error.status === 404) {
+        return navigate('/404');
+      }
+    }
   };
 
   //TODO: MAQUETACION
@@ -53,9 +62,13 @@ const AdvertPage = () => {
           )}
         </div>
       )}
-      <Button type="submit" onClick={handleSubmit}>
-        DELETE
-      </Button>
+      <AlertButton
+        buttonText="Delete advert"
+        title="Deleting advert!"
+        message="By clicking continue you agree to delete PERMANENTLY this advert if this was not your intention click Close"
+        function={handleSubmit}
+        functionText="CONTINUE"
+      />
     </Layout>
   );
 };
