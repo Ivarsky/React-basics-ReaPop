@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getLatestAdverts } from './service';
 import Button from '../shared/Button';
 import Layout from '../Layout/Layout';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const EmptyList = () => (
   <div>
@@ -16,6 +16,7 @@ const EmptyList = () => (
 );
 
 const AdvertsPage = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [adverts, setAdverts] = useState([]);
   const [saleFilter, setSaleFilter] = useState(undefined);
@@ -23,9 +24,15 @@ const AdvertsPage = () => {
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
-      const adverts = await getLatestAdverts();
-      setAdverts(adverts);
+      try {
+        setIsLoading(true);
+        const adverts = await getLatestAdverts();
+        setAdverts(adverts);
+      } catch (error) {
+        if (error.status === 401) {
+          navigate('/login');
+        }
+      }
       setIsLoading(false);
     }
     fetchData();
