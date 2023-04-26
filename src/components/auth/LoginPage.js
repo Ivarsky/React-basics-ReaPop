@@ -20,6 +20,7 @@ function LoginPage() {
   });
   const loginProps = {
     credentials: credentials,
+    //TODO: mejor mete el checkBox en credentials
     checkbox: checkBox,
   };
   console.log(loginProps);

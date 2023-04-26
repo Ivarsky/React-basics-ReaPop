@@ -27,7 +27,7 @@ const NewAdvertPage = () => {
 
   const handleChangeTag = event => {
     setTagContent(event.target.value);
-    console.log(tagContent);
+    console.log(event.target.value);
   };
 
   const handleChangePhoto = event => {
@@ -112,9 +112,9 @@ const NewAdvertPage = () => {
             <label>Tags</label>
             <select name="tags" onChange={handleChangeTag}>
               <option value={'lifestyle'}>Lifestyle</option>
-              <option value={'Mobile'}>Mobile</option>
-              <option value={'Motor'}>Motor</option>
-              <option value={'Work'}>Work</option>
+              <option value={'mobile'}>Mobile</option>
+              <option value={'motor'}>Motor</option>
+              <option value={'work'}>Work</option>
             </select>
           </div>
           <div>
