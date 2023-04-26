@@ -22,6 +22,9 @@ const AdvertPage = () => {
         if (error.status === 404) {
           return navigate('/404');
         }
+        if (error.status === 401) {
+          return navigate('/login');
+        }
         //setError(error);
       }
     }
