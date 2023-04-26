@@ -27,7 +27,6 @@ const NewAdvertPage = () => {
 
   const handleChangeTag = event => {
     setTagContent(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleChangePhoto = event => {

@@ -18,7 +18,7 @@ const EmptyList = () => (
 const AdvertsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [adverts, setAdverts] = useState([]);
-  const [filterBySale, setFilterBySale] = useState(undefined);
+  const [saleFilter, setSaleFilter] = useState(undefined);
   const [tagFilter, setTagFilter] = useState(undefined);
 
   useEffect(() => {
@@ -31,20 +31,21 @@ const AdvertsPage = () => {
     fetchData();
   }, []);
 
-  const addsFilteredBySale =
-    filterBySale === undefined
-      ? adverts
-      : adverts.filter(advert => advert.sale === filterBySale);
-
   const handleChangeTagFilter = event => {
     const value = event.target.value === 'All' ? undefined : event.target.value;
     setTagFilter(value);
   };
 
-  const addsFilteredByTags =
-    tagFilter === undefined
-      ? addsFilteredBySale
-      : addsFilteredBySale.filter(advert => advert.tags[0] === tagFilter);
+  function filterAdverts(adverts, saleFilter, tagFilter) {
+    return adverts.filter(
+      advert =>
+        (saleFilter === undefined || advert.sale === saleFilter) &&
+        (tagFilter === undefined || advert.tags[0] === tagFilter),
+    );
+  }
+
+  const filteredAdverts = filterAdverts(adverts, saleFilter, tagFilter);
+
   return (
     <Layout title="Adverts List">
       {isLoading ? (
@@ -59,22 +60,22 @@ const AdvertsPage = () => {
                 <input
                   type="radio"
                   name="filter"
-                  onChange={event => setFilterBySale(!!event.target.value)}
+                  onChange={event => setSaleFilter(!!event.target.value)}
                 />
 
                 <label>Buy</label>
                 <input
                   type="radio"
                   name="filter"
-                  onChange={event => setFilterBySale(!event.target.value)}
+                  onChange={event => setSaleFilter(!event.target.value)}
                 />
 
                 <label>All</label>
                 <input
                   type="radio"
                   name="filter"
-                  checked={filterBySale === undefined}
-                  onChange={() => setFilterBySale(undefined)}
+                  checked={saleFilter === undefined}
+                  onChange={() => setSaleFilter(undefined)}
                 />
               </div>
               <div>
@@ -92,7 +93,7 @@ const AdvertsPage = () => {
                 </select>
               </div>
               <ul>
-                {addsFilteredByTags.map(advert => (
+                {filteredAdverts.map(advert => (
                   <li key={advert.id}>
                     <img src={`${advert.photo}`} placeholder="" />
                     <Link
