@@ -1,16 +1,18 @@
 import Button from '../shared/Button';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 import { logout } from '../auth/service';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
   const { isLogged, onLogout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogoutClick = async () => {
     await logout();
     onLogout();
+    navigate('/login');
   };
 
   return (
