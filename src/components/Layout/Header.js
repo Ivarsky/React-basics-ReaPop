@@ -1,8 +1,9 @@
-import Button from '../shared/Button';
+import { Button } from 'react-bootstrap';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 import { logout } from '../auth/service';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';
+import { Nav } from 'react-bootstrap';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
@@ -22,19 +23,25 @@ const Header = () => {
           <Icon width="32" height="32" />
         </div>
       </Link>
-      <nav>
-        <NavLink to="/adverts/new">Create new Advert!</NavLink>|
-        <NavLink to="/adverts" end>
-          See Latests adds!
-        </NavLink>
+      <Nav className="justify-content-center">
+        <Nav.Item>
+          <Nav.Link to="/adverts/new">Create new Advert!</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link to="/adverts" end>
+            See Latests adds!
+          </Nav.Link>
+        </Nav.Item>
         {isLogged ? (
-          <Button onClick={handleLogoutClick}>Logout</Button>
+          <Button variant="primary" onClick={handleLogoutClick}>
+            Logout
+          </Button>
         ) : (
           <Button as={Link} to="/login">
             Login
           </Button>
         )}
-      </nav>
+      </Nav>
     </header>
   );
 };
