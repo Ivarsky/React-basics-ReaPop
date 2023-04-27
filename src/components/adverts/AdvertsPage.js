@@ -62,55 +62,59 @@ const AdvertsPage = () => {
           {/* eslint-disable-next-line no-extra-boolean-cast */}
           {!!adverts.length ? (
             <>
-              <div>
-                <label>Sell</label>
-                <input
-                  type="radio"
-                  name="filter"
-                  onChange={event => setSaleFilter(!!event.target.value)}
-                />
+              <div className="Filters">
+                <div>
+                  <label>Sell</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    onChange={event => setSaleFilter(!!event.target.value)}
+                  />
 
-                <label>Buy</label>
-                <input
-                  type="radio"
-                  name="filter"
-                  onChange={event => setSaleFilter(!event.target.value)}
-                />
+                  <label>Buy</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    onChange={event => setSaleFilter(!event.target.value)}
+                  />
 
-                <label>All</label>
-                <input
-                  type="radio"
-                  name="filter"
-                  checked={saleFilter === undefined}
-                  onChange={() => setSaleFilter(undefined)}
-                />
-              </div>
-              <div>
-                <label>Filter by Tag</label>
-                <select
-                  name="tagFilter"
-                  value={tagFilter}
-                  onChange={handleChangeTagFilter}
-                >
-                  <option value={undefined}>All</option>
-                  <option value={'lifestyle'}>Lifestyle</option>
-                  <option value={'mobile'}>Mobile</option>
-                  <option value={'motor'}>Motor</option>
-                  <option value={'work'}>Work</option>
-                </select>
+                  <label>All</label>
+                  <input
+                    type="radio"
+                    name="filter"
+                    checked={saleFilter === undefined}
+                    onChange={() => setSaleFilter(undefined)}
+                  />
+                </div>
+                <div>
+                  <label>Filter by Tag</label>
+                  <select
+                    name="tagFilter"
+                    value={tagFilter}
+                    onChange={handleChangeTagFilter}
+                  >
+                    <option value={undefined}>All</option>
+                    <option value={'lifestyle'}>Lifestyle</option>
+                    <option value={'mobile'}>Mobile</option>
+                    <option value={'motor'}>Motor</option>
+                    <option value={'work'}>Work</option>
+                  </select>
+                </div>
               </div>
               <ul>
-                {filteredAdverts.map(advert => (
-                  <li key={advert.id}>
-                    <img src={`${advert.photo}`} placeholder="" />
-                    <Link
-                      to={`/adverts/${advert.id}`}
-                      style={{ textDecoration: 'none' }}
-                    >
-                      `{advert.name}: {advert.price} Euros`
-                    </Link>
-                  </li>
-                ))}
+                <div className="Advert">
+                  {filteredAdverts.map(advert => (
+                    <li key={advert.id}>
+                      <img src={`${advert.photo}`} placeholder="" />
+                      <Link
+                        to={`/adverts/${advert.id}`}
+                        style={{ textDecoration: 'none' }}
+                      >
+                        `{advert.name}: {advert.price} Euros`
+                      </Link>
+                    </li>
+                  ))}
+                </div>
               </ul>
             </>
           ) : (

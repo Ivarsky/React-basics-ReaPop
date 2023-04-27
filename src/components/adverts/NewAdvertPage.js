@@ -63,6 +63,8 @@ const NewAdvertPage = () => {
 
   const buttonText = isLoading ? 'Loading' : 'Submit!';
 
+  //TODO: CARGA LOS TAGS DESDE EL ENDPOINT NO LOS HARDCODEES.
+
   return (
     <Layout title="Publish your advert!">
       <div>
