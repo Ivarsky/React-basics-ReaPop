@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 import { logout } from '../auth/service';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';
 import { Nav } from 'react-bootstrap';
 
