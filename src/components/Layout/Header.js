@@ -1,9 +1,9 @@
 import { Button } from 'react-bootstrap';
 import { ReactComponent as Icon } from '../../assets/twitter.svg';
 import { logout } from '../auth/service';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';
-import { Nav } from 'react-bootstrap';
+import './Header.css';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
@@ -23,15 +23,13 @@ const Header = () => {
           <Icon width="32" height="32" />
         </div>
       </Link>
-      <Nav className="justify-content-center">
-        <Nav.Item>
-          <Nav.Link to="/adverts/new">Create new Advert!</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link to="/adverts" end>
+      <nav className="navBar">
+        <div className="links">
+          <NavLink to="/adverts/new">Create new Advert!</NavLink> |{' '}
+          <NavLink to="/adverts" end>
             See Latests adds!
-          </Nav.Link>
-        </Nav.Item>
+          </NavLink>
+        </div>
         {isLogged ? (
           <Button variant="primary" onClick={handleLogoutClick}>
             Logout
@@ -41,7 +39,7 @@ const Header = () => {
             Login
           </Button>
         )}
-      </Nav>
+      </nav>
     </header>
   );
 };

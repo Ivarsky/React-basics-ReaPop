@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react';
 //import styles from './styles.module.css';
 import { getLatestAdverts } from './service';
-import Button from '../shared/Button';
+import { Button, Card, CardGroup } from 'react-bootstrap';
 import Layout from '../Layout/Layout';
 import { Link, useNavigate } from 'react-router-dom';
+import placeholderPhoto from '../../assets/placeholder.png';
 
 const EmptyList = () => (
   <div>
@@ -50,7 +51,6 @@ const AdvertsPage = () => {
         (tagFilter === undefined || advert.tags[0] === tagFilter),
     );
   }
-
   const filteredAdverts = filterAdverts(adverts, saleFilter, tagFilter);
 
   return (
@@ -103,17 +103,29 @@ const AdvertsPage = () => {
               </div>
               <ul>
                 <div className="Advert">
-                  {filteredAdverts.map(advert => (
-                    <li key={advert.id}>
-                      <img src={`${advert.photo}`} placeholder="" />
+                  <CardGroup>
+                    {filteredAdverts.map(advert => (
                       <Link
                         to={`/adverts/${advert.id}`}
                         style={{ textDecoration: 'none' }}
+                        key={advert.id}
                       >
-                        `{advert.name}: {advert.price} Euros`
+                        <Card style={{ width: '18rem' }}>
+                          <Card.Img
+                            variant="top"
+                            src={advert.photo ? advert.photo : placeholderPhoto}
+                          />
+                          <Card.Body>
+                            <Card.Title>{advert.name}</Card.Title>
+                            <Card.Text>
+                              {advert.sale ? 'Selling ' : 'Looking for '}
+                              {advert.name} at {advert.price} Eur
+                            </Card.Text>
+                          </Card.Body>
+                        </Card>
                       </Link>
-                    </li>
-                  ))}
+                    ))}
+                  </CardGroup>
                 </div>
               </ul>
             </>
