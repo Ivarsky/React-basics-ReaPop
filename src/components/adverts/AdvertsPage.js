@@ -110,7 +110,7 @@ const AdvertsPage = () => {
                         style={{ textDecoration: 'none' }}
                         key={advert.id}
                       >
-                        <Card style={{ width: '18rem' }}>
+                        <Card style={{ width: '18rem' }} className="mb-5 mx-2">
                           <Card.Img
                             variant="top"
                             src={advert.photo ? advert.photo : placeholderPhoto}
@@ -120,6 +120,8 @@ const AdvertsPage = () => {
                             <Card.Text>
                               {advert.sale ? 'Selling ' : 'Looking for '}
                               {advert.name} at {advert.price} Eur
+                              <br />
+                              {`Tags: ${advert.tags}`}
                             </Card.Text>
                           </Card.Body>
                         </Card>
