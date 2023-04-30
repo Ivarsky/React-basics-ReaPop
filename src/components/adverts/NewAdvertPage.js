@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import { Button, Form } from 'react-bootstrap';
-import { createAdvert } from './service';
+import { createAdvert, getTags } from './service';
 import { useState } from 'react';
 
 const NewAdvertPage = () => {
@@ -11,7 +11,6 @@ const NewAdvertPage = () => {
   const [priceContent, setPriceContent] = useState('');
   const [sellContent, setSellContent] = useState('');
   const [tagContent, setTagContent] = useState('lifestyle');
-  const [photoContent, setPhotoContent] = useState('');
 
   const handleChangeName = event => {
     setNameContent(event.target.value);
@@ -29,13 +28,12 @@ const NewAdvertPage = () => {
     setTagContent(event.target.value);
   };
 
-  const handleChangePhoto = event => {
-    setPhotoContent(event.target.value);
-    console.log(event.target.value);
-  };
-
   const isDisabled =
     !nameContent || !priceContent || !sellContent || !tagContent || isLoading;
+
+  const tags = getTags().then(tags => {
+    return tags;
+  });
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -53,18 +51,9 @@ const NewAdvertPage = () => {
         navigate('/login');
       }
     }
-    console.log(
-      nameContent,
-      priceContent,
-      sellContent,
-      tagContent,
-      photoContent,
-    );
   };
 
   const buttonText = isLoading ? 'Loading' : 'Submit!';
-
-  //TODO: CARGA LOS TAGS DESDE EL ENDPOINT NO LOS HARDCODEES.
 
   return (
     <Layout title="Publish your advert!">
@@ -93,11 +82,7 @@ const NewAdvertPage = () => {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Select image</Form.Label>
-            <Form.Control
-              type="file"
-              name="photo"
-              onChange={handleChangePhoto}
-            />
+            <Form.Control type="file" name="photo" />
           </Form.Group>
           <Form.Group className="d-flex justify-content-center">
             <Form.Check
@@ -123,10 +108,10 @@ const NewAdvertPage = () => {
               name="tags"
               onChange={handleChangeTag}
             >
-              <option value="lifestyle">Lifestyle</option>
-              <option value="mobile">Mobile</option>
-              <option value="motor">Motor</option>
-              <option value="work">Work</option>
+              <option value={tags[0]}>Lifestyle</option>
+              <option value={tags[1]}>Mobile</option>
+              <option value={tags[2]}>Motor</option>
+              <option value={tags[3]}>Work</option>
             </Form.Control>
           </Form.Group>
           <Button variant="primary" type="Submit" disabled={isDisabled}>

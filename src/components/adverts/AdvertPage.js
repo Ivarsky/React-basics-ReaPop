@@ -49,7 +49,6 @@ const AdvertPage = () => {
     console.log(event);
   };
 
-  //TODO: MAQUETACION
   return (
     <Layout title="Advert detail">
       {isLoading ? (
