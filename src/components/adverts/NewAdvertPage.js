@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Layout from '../Layout/Layout';
-import Button from '../shared/Button';
+import { Button, Form } from 'react-bootstrap';
 import { createAdvert } from './service';
 import { useState } from 'react';
 
@@ -31,6 +31,7 @@ const NewAdvertPage = () => {
 
   const handleChangePhoto = event => {
     setPhotoContent(event.target.value);
+    console.log(event.target.value);
   };
 
   const isDisabled =
@@ -68,62 +69,70 @@ const NewAdvertPage = () => {
   return (
     <Layout title="Publish your advert!">
       <div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <input
-              placeholder="Product name"
+        <Form
+          onSubmit={handleSubmit}
+          style={{ maxWidth: '500px' }}
+          className="mx-auto"
+        >
+          <Form.Group className="mb-3">
+            <Form.Label>Product name</Form.Label>
+            <Form.Control
+              placeholder="Insert product name"
               name="name"
               onChange={handleChangeName}
-            ></input>
-          </div>
-          <div>
-            <input
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
               type="number"
-              step={0.01}
               placeholder="Price in EUR"
               name="price"
               onChange={handleChangePrice}
-            ></input>
-          </div>
-          <div>
-            <label>Select image</label>
-            <input
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Select image</Form.Label>
+            <Form.Control
               type="file"
               name="photo"
               onChange={handleChangePhoto}
-            ></input>
-          </div>
-          <div>
-            <label>Sell</label>
-            <input
+            />
+          </Form.Group>
+          <Form.Group className="d-flex justify-content-center">
+            <Form.Check
               type="radio"
               name="sale"
               value={true}
               onChange={handleChangeSell}
-            ></input>
-            <label>Buy</label>
-            <input
+              label="Sell"
+              className="mx-2"
+            />
+            <Form.Check
               type="radio"
               name="sale"
               value={false}
               onChange={handleChangeSell}
-            ></input>
-          </div>
-          <div>
-            <label>Tags</label>
-            <select name="tags" onChange={handleChangeTag}>
-              <option value={'lifestyle'}>Lifestyle</option>
-              <option value={'mobile'}>Mobile</option>
-              <option value={'motor'}>Motor</option>
-              <option value={'work'}>Work</option>
-            </select>
-          </div>
-          <div>
-            <Button type="submit" disabled={isDisabled}>
-              {buttonText}
-            </Button>
-          </div>
-        </form>
+              label="Buy"
+              className="mx-2"
+            />
+            <Form.Label className="mx-2">Tags:</Form.Label>
+            <Form.Control
+              className="mx-2 mb-4"
+              as="select"
+              name="tags"
+              onChange={handleChangeTag}
+            >
+              <option value="lifestyle">Lifestyle</option>
+              <option value="mobile">Mobile</option>
+              <option value="motor">Motor</option>
+              <option value="work">Work</option>
+            </Form.Control>
+          </Form.Group>
+          <Button variant="primary" type="Submit" disabled={isDisabled}>
+            {buttonText}
+          </Button>
+        </Form>
       </div>
     </Layout>
   );
