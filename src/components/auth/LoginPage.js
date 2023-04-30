@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Button from '../shared/Button';
 import { login } from './service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from './context';
+import { Alert, Button, Form } from 'react-bootstrap';
 
 // eslint-disable-next-line react/prop-types
 function LoginPage() {
@@ -68,31 +68,50 @@ function LoginPage() {
   return (
     <div>
       <h1>Log in to your Account</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          onChange={handleChange}
-          value={credentials.email}
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={handleChange}
-          value={credentials.password}
-        />
-        <Button type="submit" variant="primary" disabled={buttonDisabled}>
-          Log In
+      <Form
+        onSubmit={handleSubmit}
+        style={{ maxWidth: '500px' }}
+        className="mx-auto"
+      >
+        <Form.Group className="mb-3" controlId="formGroupEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            name="email"
+            onChange={handleChange}
+            value={credentials.email}
+          />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formGroupPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            onChange={handleChange}
+            value={credentials.password}
+          />
+        </Form.Group>
+        <Form.Group className="d-flex align-items-center justify-content-end">
+          <Form.Label>Keep me logged in</Form.Label>
+          <Form.Check
+            type="switch"
+            checked={checkBox}
+            onChange={handleCheckbox}
+            className="mx-3"
+          />
+        </Form.Group>
+
+        <Button variant="primary" type="Submit" disabled={buttonDisabled}>
+          Log in
         </Button>
-        <div>
-          <label>Keep me logged</label>
-          <input type="checkbox" checked={checkBox} onChange={handleCheckbox} />
-        </div>
-      </form>
+      </Form>
+
       {error && (
-        <div onClick={resetError} className="loginPage-error">
-          {error.message}
-        </div>
+        <Alert variant="danger" onClick={resetError}>
+          {error.message}, click to dismiss
+        </Alert>
       )}
     </div>
   );
