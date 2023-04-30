@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import { ReactComponent as Icon } from '../../assets/twitter.svg';
+import { ReactComponent as Icon } from '../../assets/beer-svgrepo-com.svg';
 import { logout } from '../auth/service';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';

@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import { useEffect, useState } from 'react';
 import { deleteAdvert, getAdvert } from './service';
-import { Alert, Button, Card } from 'react-bootstrap';
+import { Alert, Button, Card, Spinner } from 'react-bootstrap';
 import placeholderPhoto from '../../assets/placeholder.png';
 
 const AdvertPage = () => {
@@ -52,7 +52,7 @@ const AdvertPage = () => {
   return (
     <Layout title="Advert detail">
       {isLoading ? (
-        <div>Loading...</div>
+        <Spinner animation="border" variant="primary" />
       ) : (
         <div className="d-flex justify-content-center mt-4">
           <Card

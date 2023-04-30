@@ -2,6 +2,7 @@ import './App.css';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import RequireAuth from './components/auth/RequireAuth';
 import { Suspense, lazy } from 'react';
+import { Spinner } from 'react-bootstrap';
 
 const AdvertsPage = lazy(() => import('./components/adverts/AdvertsPage'));
 const LoginPage = lazy(() => import('./components/auth/LoginPage'));
@@ -10,7 +11,7 @@ const AdvertPage = lazy(() => import('./components/adverts/AdvertPage'));
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner animation="border" variant="primary" />}>
       <div className="App">
         <Routes>
           <Route path="/login" element={<LoginPage />} />

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 //import styles from './styles.module.css';
 import { getLatestAdverts } from './service';
-import { Button, Card, CardGroup } from 'react-bootstrap';
+import { Button, Card, CardGroup, Spinner } from 'react-bootstrap';
 import Layout from '../Layout/Layout';
 import { Link, useNavigate } from 'react-router-dom';
 import placeholderPhoto from '../../assets/placeholder.png';
@@ -56,7 +56,7 @@ const AdvertsPage = () => {
   return (
     <Layout title="Adverts List">
       {isLoading ? (
-        <div>Loading...</div>
+        <Spinner animation="border" variant="primary" />
       ) : (
         <div>
           {/* eslint-disable-next-line no-extra-boolean-cast */}
