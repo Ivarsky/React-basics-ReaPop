@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 import { useEffect, useState } from 'react';
 //import styles from './styles.module.css';
@@ -6,6 +7,9 @@ import { Button, Card, CardGroup, Spinner } from 'react-bootstrap';
 import Layout from '../Layout/Layout';
 import { Link, useNavigate } from 'react-router-dom';
 import placeholderPhoto from '../../assets/placeholder.png';
+import { connect } from 'react-redux';
+import { getAdverts } from '../../store/selectors';
+import { advertsLoaded } from '../../store/actions';
 
 const EmptyList = () => (
   <div>
@@ -16,10 +20,10 @@ const EmptyList = () => (
   </div>
 );
 
-const AdvertsPage = () => {
+const AdvertsPage = ({ adverts, onAdvertsLoaded }) => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [adverts, setAdverts] = useState([]);
+
   const [saleFilter, setSaleFilter] = useState(undefined);
   const [tagFilter, setTagFilter] = useState(undefined);
 
@@ -28,7 +32,7 @@ const AdvertsPage = () => {
       try {
         setIsLoading(true);
         const adverts = await getLatestAdverts();
-        setAdverts(adverts);
+        onAdvertsLoaded(adverts);
       } catch (error) {
         if (error.status === 401) {
           navigate('/login');
@@ -139,4 +143,17 @@ const AdvertsPage = () => {
     </Layout>
   );
 };
-export default AdvertsPage;
+
+const mapStateToProps = state => ({
+  adverts: getAdverts(state),
+});
+//TODO:borra comment
+//const mapDispatchToProps = dispatch => ({
+//  onAdvertsLoaded: adverts => dispatch(advertsLoaded(adverts))
+//});
+
+const mapDispatchToProps = {
+  onAdvertsLoaded: advertsLoaded,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdvertsPage);
