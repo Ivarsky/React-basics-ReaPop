@@ -3,7 +3,7 @@ import { login } from './service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { authLogin } from '../../redux/actions';
+import { authLogin } from '../../store/actions';
 
 // eslint-disable-next-line react/prop-types
 function LoginPage() {

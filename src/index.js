@@ -3,8 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
-import configureStore from './redux';
-import { AuthContextProvider } from './components/auth/context';
+import configureStore from './store';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Root from './Root';
 
@@ -19,9 +18,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Root store={store}>
-      <AuthContextProvider isInitiallyLogged={!!accessToken}>
-        <App />
-      </AuthContextProvider>
+      <App />
     </Root>
   </React.StrictMode>,
 );

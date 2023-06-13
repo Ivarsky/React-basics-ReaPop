@@ -2,14 +2,14 @@ import { Button } from 'react-bootstrap';
 import { ReactComponent as Icon } from '../../assets/beer-svgrepo-com.svg';
 import { logout } from '../auth/service';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../auth/context';
 import './Header.css';
-import { useDispatch } from 'react-redux';
-import { authLogout } from '../../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { authLogout } from '../../store/actions';
+import { getIsLogged } from '../../store/selectors';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
-  const { isLogged } = useAuth();
+  const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
