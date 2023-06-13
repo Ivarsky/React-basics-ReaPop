@@ -4,11 +4,16 @@ import { logout } from '../auth/service';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/context';
 import './Header.css';
+import { useDispatch } from 'react-redux';
+import { authLogout } from '../../redux/actions';
 
 // eslint-disable-next-line react/prop-types
 const Header = () => {
-  const { isLogged, onLogout } = useAuth();
+  const { isLogged } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const onLogout = () => dispatch(authLogout());
 
   const handleLogoutClick = async () => {
     await logout();

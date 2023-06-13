@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { login } from './service';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
 import { Alert, Button, Form } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import { authLogin } from '../../redux/actions';
 
 // eslint-disable-next-line react/prop-types
 function LoginPage() {
-  const { onLogin } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,6 +29,8 @@ function LoginPage() {
   const resetError = () => {
     setError(null);
   };
+
+  const onLogin = () => dispatch(authLogin());
 
   const handleSubmit = async event => {
     event.preventDefault();
