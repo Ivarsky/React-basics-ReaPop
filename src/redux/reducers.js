@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ADVERTS_LOADED, AUTH_LOGIN, AUTH_LOGOUT } from './types';
 
 export const defaultState = {
