@@ -2,17 +2,24 @@ import { useState } from 'react';
 import { login } from './service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Button, Form } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { authLogin } from '../../store/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  authLoginFailure,
+  authLoginRequest,
+  authLoginSucces,
+  uiResetError,
+} from '../../store/actions';
+import { getUi } from '../../store/selectors';
 
 // eslint-disable-next-line react/prop-types
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { isLoading, error } = useSelector(getUi);
+  //TODO:borra esto
+  //const [isLoading, setIsLoading] = useState(false);
+  //const [error, setError] = useState(null);
   const [checkBox, setCheckBox] = useState(false);
   // eslint-disable-next-line no-undef
   const [credentials, setCredentials] = useState({
@@ -27,26 +34,24 @@ function LoginPage() {
   console.log(loginProps);
 
   const resetError = () => {
-    setError(null);
+    dispatch(uiResetError());
   };
 
-  const onLogin = () => dispatch(authLogin());
+  const onLogin = () => dispatch(authLoginSucces());
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    resetError(), setIsLoading(true);
+    dispatch(authLoginRequest());
     try {
       await login(loginProps);
-      setIsLoading(false);
       //Logged In
       onLogin();
       //Redirect to ultima pagina o home
       const to = location.state?.from?.pathname || '/';
       navigate(to);
     } catch (error) {
-      setError(error);
-      setIsLoading(false);
+      dispatch(authLoginFailure(error));
     }
   };
 
