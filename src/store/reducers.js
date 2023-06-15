@@ -38,20 +38,21 @@ export function adverts(state = defaultState.adverts, action) {
 }
 
 export function ui(state = defaultState.ui, action) {
-  switch (action.type) {
-    case AUTH_LOGIN_REQUEST:
-      return { isLoading: true, error: null };
-
-    case AUTH_LOGIN_FAILURE:
-      return { isLoading: false, error: action.payload };
-
-    case AUTH_LOGIN_SUCCES:
-      return { isLoading: false, error: null };
-
-    case UI_RESET_ERROR:
-      return { ...state, error: null };
-
-    default:
-      return state;
+  if (action.error) {
+    return { isLoading: false, error: action.payload };
   }
+
+  if (/_REQUEST$/.test(action.type)) {
+    return { isLoading: true, error: null };
+  }
+
+  if (/_SUCCES$/.test(action.type)) {
+    return { isLoading: false, error: null };
+  }
+
+  if (action.type === UI_RESET_ERROR) {
+    return { ...state, error: null };
+  }
+
+  return state;
 }
