@@ -1,3 +1,4 @@
+import { login } from "../components/auth/service";
 import {
   ADVERTS_LOADED,
   AUTH_LOGIN_FAILURE,
@@ -5,7 +6,7 @@ import {
   AUTH_LOGIN_SUCCES,
   AUTH_LOGOUT,
   UI_RESET_ERROR,
-} from './types';
+} from "./types";
 
 export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
@@ -15,17 +16,29 @@ export const authLoginSucces = () => ({
   type: AUTH_LOGIN_SUCCES,
 });
 
-export const authLoginFailure = error => ({
+export const authLoginFailure = (error) => ({
   type: AUTH_LOGIN_FAILURE,
   error: true,
   payload: error,
 });
 
+export const authLogin = (loginProps) => async (dispatch) => {
+  dispatch(authLoginRequest());
+  try {
+    await login(loginProps);
+    //Logged In
+    dispatch(authLoginSucces());
+  } catch (error) {
+    dispatch(authLoginFailure(error));
+    throw error;
+  }
+};
+
 export const authLogout = () => ({
   type: AUTH_LOGOUT,
 });
 
-export const advertsLoaded = adverts => ({
+export const advertsLoaded = (adverts) => ({
   type: ADVERTS_LOADED,
   payload: adverts,
 });
