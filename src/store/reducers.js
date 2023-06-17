@@ -1,16 +1,17 @@
 /* eslint-disable */
 import {
-  ADVERTS_LOADED,
-  AUTH_LOGIN_FAILURE,
-  AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCES,
+  ADVERTS_LOADED_SUCCESS,
+  AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   UI_RESET_ERROR,
-} from './types';
+} from "./types";
 
 export const defaultState = {
   auth: false,
-  adverts: [],
+  adverts: {
+    areLoaded: false,
+    data: [],
+  },
   ui: {
     isLoading: false,
     error: null,
@@ -19,7 +20,7 @@ export const defaultState = {
 
 export function auth(state = defaultState.auth, action) {
   switch (action.type) {
-    case AUTH_LOGIN_SUCCES:
+    case AUTH_LOGIN_SUCCESS:
       return true;
 
     case AUTH_LOGOUT:
@@ -31,8 +32,11 @@ export function auth(state = defaultState.auth, action) {
 }
 
 export function adverts(state = defaultState.adverts, action) {
-  if (action.type === ADVERTS_LOADED) {
-    return action.payload;
+  if (action.type === ADVERTS_LOADED_SUCCESS) {
+    return {
+      areLoaded: true,
+      data: action.payload,
+    };
   }
   return state;
 }
@@ -46,7 +50,7 @@ export function ui(state = defaultState.ui, action) {
     return { isLoading: true, error: null };
   }
 
-  if (/_SUCCES$/.test(action.type)) {
+  if (/_SUCCESS$/.test(action.type)) {
     return { isLoading: false, error: null };
   }
 

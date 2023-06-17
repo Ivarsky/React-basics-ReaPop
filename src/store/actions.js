@@ -1,19 +1,23 @@
 import { login } from "../components/auth/service";
+import { getLatestAdverts } from "../components/adverts/service";
 import {
-  ADVERTS_LOADED,
+  ADVERTS_LOADED_FAILURE,
+  ADVERTS_LOADED_REQUEST,
+  ADVERTS_LOADED_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
-  AUTH_LOGIN_SUCCES,
+  AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   UI_RESET_ERROR,
 } from "./types";
+import { areAdvertsLoaded } from "./selectors";
 
 export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
 });
 
 export const authLoginSucces = () => ({
-  type: AUTH_LOGIN_SUCCES,
+  type: AUTH_LOGIN_SUCCESS,
 });
 
 export const authLoginFailure = (error) => ({
@@ -38,10 +42,34 @@ export const authLogout = () => ({
   type: AUTH_LOGOUT,
 });
 
-export const advertsLoaded = (adverts) => ({
-  type: ADVERTS_LOADED,
+export const advertsLoadedRequest = () => ({
+  type: ADVERTS_LOADED_REQUEST,
+});
+
+export const advertsLoadedSuccess = (adverts) => ({
+  type: ADVERTS_LOADED_SUCCESS,
   payload: adverts,
 });
+
+export const advertsLoadedFailure = (error) => ({
+  type: ADVERTS_LOADED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+export const advertsLoaded = () => async (dispatch, getState) => {
+  if (areAdvertsLoaded(getState())) {
+    return;
+  }
+
+  dispatch(advertsLoadedRequest());
+  try {
+    const adverts = await getLatestAdverts();
+    dispatch(advertsLoadedSuccess(adverts));
+  } catch (error) {
+    dispatch(advertsLoadedFailure(error));
+  }
+};
 
 export const uiResetError = () => ({
   type: UI_RESET_ERROR,
