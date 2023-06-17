@@ -15,3 +15,6 @@ export const getAdvert = (advertId) => (state) =>
 export const getUi = (state) => state.ui;
 
 export const areAdvertsLoaded = (state) => state.adverts.areLoaded;
+
+export const areTagsLoaded = (state) => state.tags.areLoaded;
+export const getTags = (state) => state.tags.data;

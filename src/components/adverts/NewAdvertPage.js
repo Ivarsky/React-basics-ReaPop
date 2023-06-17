@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { Button, Form } from "react-bootstrap";
-import { getTags } from "./service";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { advertCreate } from "../../store/actions";
-import { getUi } from "../../store/selectors";
+import { getTags, getUi } from "../../store/selectors";
 
 const NewAdvertPage = () => {
   const dispatch = useDispatch();
@@ -14,7 +13,8 @@ const NewAdvertPage = () => {
   const [nameContent, setNameContent] = useState("");
   const [priceContent, setPriceContent] = useState("");
   const [sellContent, setSellContent] = useState("");
-  const [tagContent, setTagContent] = useState("lifestyle");
+  const tags = [useSelector(getTags)];
+  const [tagContent, setTagContent] = useState(tags[0]);
 
   const handleChangeName = (event) => {
     setNameContent(event.target.value);
@@ -34,10 +34,6 @@ const NewAdvertPage = () => {
 
   const isDisabled =
     !nameContent || !priceContent || !sellContent || !tagContent || isLoading;
-
-  const tags = getTags().then((tags) => {
-    return tags;
-  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();

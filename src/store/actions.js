@@ -1,4 +1,4 @@
-import { areAdvertsLoaded, getAdvert } from "./selectors";
+import { areAdvertsLoaded, areTagsLoaded, getAdvert } from "./selectors";
 import {
   ADVERTS_LOADED_FAILURE,
   ADVERTS_LOADED_REQUEST,
@@ -192,12 +192,18 @@ export const tagsLoadSuccess = (tags) => ({
 
 export const tagsLoad =
   () =>
-  async (dispatch, _getState, { adverts: advertsService }) => {
+  async (dispatch, getState, { adverts: advertsService }) => {
+    if (areTagsLoaded(getState())) {
+      return;
+    }
     dispatch(tagsLoadRequest());
     try {
       const tags = await advertsService.getTags();
-      dispatch(tagsLoadSuccess());
-    } catch (error) {}
+      dispatch(tagsLoadSuccess(tags));
+    } catch (error) {
+      dispatch(tagsLoadFailure(error));
+      throw error;
+    }
   };
 
 export const uiResetError = () => ({
