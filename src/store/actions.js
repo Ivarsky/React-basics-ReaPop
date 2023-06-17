@@ -1,5 +1,4 @@
-import { login } from "../components/auth/service";
-import { getLatestAdverts } from "../components/adverts/service";
+import { areAdvertsLoaded } from "./selectors";
 import {
   ADVERTS_LOADED_FAILURE,
   ADVERTS_LOADED_REQUEST,
@@ -10,7 +9,6 @@ import {
   AUTH_LOGOUT,
   UI_RESET_ERROR,
 } from "./types";
-import { areAdvertsLoaded } from "./selectors";
 
 export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
@@ -26,17 +24,19 @@ export const authLoginFailure = (error) => ({
   payload: error,
 });
 
-export const authLogin = (loginProps) => async (dispatch) => {
-  dispatch(authLoginRequest());
-  try {
-    await login(loginProps);
-    //Logged In
-    dispatch(authLoginSucces());
-  } catch (error) {
-    dispatch(authLoginFailure(error));
-    throw error;
-  }
-};
+export const authLogin =
+  (loginProps) =>
+  async (dispatch, _getState, { auth }) => {
+    dispatch(authLoginRequest());
+    try {
+      await auth.login(loginProps);
+      //Logged In
+      dispatch(authLoginSucces());
+    } catch (error) {
+      dispatch(authLoginFailure(error));
+      throw error;
+    }
+  };
 
 export const authLogout = () => ({
   type: AUTH_LOGOUT,
@@ -57,19 +57,21 @@ export const advertsLoadedFailure = (error) => ({
   payload: error,
 });
 
-export const advertsLoaded = () => async (dispatch, getState) => {
-  if (areAdvertsLoaded(getState())) {
-    return;
-  }
+export const advertsLoaded =
+  () =>
+  async (dispatch, getState, { adverts: advertsService }) => {
+    if (areAdvertsLoaded(getState())) {
+      return;
+    }
 
-  dispatch(advertsLoadedRequest());
-  try {
-    const adverts = await getLatestAdverts();
-    dispatch(advertsLoadedSuccess(adverts));
-  } catch (error) {
-    dispatch(advertsLoadedFailure(error));
-  }
-};
+    dispatch(advertsLoadedRequest());
+    try {
+      const adverts = await advertsService.getLatestAdverts();
+      dispatch(advertsLoadedSuccess(adverts));
+    } catch (error) {
+      dispatch(advertsLoadedFailure(error));
+    }
+  };
 
 export const uiResetError = () => ({
   type: UI_RESET_ERROR,
