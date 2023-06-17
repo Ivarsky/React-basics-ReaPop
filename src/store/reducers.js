@@ -38,6 +38,13 @@ export function adverts(state = defaultState.adverts, action) {
       data: action.payload,
     };
   }
+
+  if (action.type === ADVERTS_LOADED_SUCCESS) {
+    return {
+      ...state,
+      data: [action.payload],
+    };
+  }
   return state;
 }
 

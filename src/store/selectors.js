@@ -2,14 +2,15 @@
 /* eslint-disable no-debugger */
 export const getIsLogged = (state) => state.auth;
 
-export const getAdverts = (state) => state.adverts.data;
+export const getAdverts = (state) =>
+  state.adverts.areLoaded ? state.adverts.data : [];
 
 //TODO: borra esto
 //export const getAdvert = (state, advertId) =>
 //  getAdverts(state).find(advert => advert.id === advertId);
 
 export const getAdvert = (advertId) => (state) =>
-  getAdverts(state).find((advert) => advert.id === advertId);
+  state.adverts.data.find((advert) => advert.id === advertId);
 
 export const getUi = (state) => state.ui;
 

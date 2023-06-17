@@ -1,8 +1,11 @@
-import { areAdvertsLoaded } from "./selectors";
+import { areAdvertsLoaded, getAdvert } from "./selectors";
 import {
   ADVERTS_LOADED_FAILURE,
   ADVERTS_LOADED_REQUEST,
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_LOADED_FAILURE,
+  ADVERT_LOADED_REQUEST,
+  ADVERT_LOADED_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
@@ -70,6 +73,39 @@ export const advertsLoaded =
       dispatch(advertsLoadedSuccess(adverts));
     } catch (error) {
       dispatch(advertsLoadedFailure(error));
+    }
+  };
+
+export const advertLoadedRequest = () => ({
+  type: ADVERT_LOADED_REQUEST,
+});
+
+export const advertLoadedSuccess = (advert) => ({
+  type: ADVERT_LOADED_SUCCESS,
+  payload: advert,
+});
+
+export const advertLoadedFailure = (error) => ({
+  type: ADVERT_LOADED_FAILURE,
+  error: true,
+  payload: error,
+});
+
+export const advertLoad =
+  (advertId) =>
+  async (dispatch, getState, { adverts: advertsService }) => {
+    const isLoaded = getAdvert(advertId)(getState());
+    if (isLoaded) {
+      return;
+    }
+
+    dispatch(advertLoadedRequest());
+    try {
+      const advert = await advertsService.getAdvert(advertId);
+      dispatch(advertLoadedSuccess(advert));
+    } catch (error) {
+      dispatch(advertLoadedFailure(error));
+      throw error;
     }
   };
 
