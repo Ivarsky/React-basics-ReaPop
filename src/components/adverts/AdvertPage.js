@@ -2,12 +2,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { useEffect, useState } from "react";
-import { deleteAdvert } from "./service";
 import { Alert, Button, Card, Spinner } from "react-bootstrap";
 import placeholderPhoto from "../../assets/placeholder.png";
 import { getAdvert } from "../../store/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { advertLoad } from "../../store/actions";
+import { advertDelete, advertLoad } from "../../store/actions";
 
 const AdvertPage = () => {
   const dispatch = useDispatch();
@@ -33,9 +32,7 @@ const AdvertPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      setIsLoading(true);
-      await deleteAdvert(advertId);
-      setIsLoading(false);
+      await dispatch(advertDelete(advertId));
       const to = "/";
       navigate(to);
     } catch (error) {

@@ -1,66 +1,70 @@
-import { useNavigate } from 'react-router-dom';
-import Layout from '../Layout/Layout';
-import { Button, Form } from 'react-bootstrap';
-import { createAdvert, getTags } from './service';
-import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import Layout from "../Layout/Layout";
+import { Button, Form } from "react-bootstrap";
+import { getTags } from "./service";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { advertCreate } from "../../store/actions";
+import { getUi } from "../../store/selectors";
 
 const NewAdvertPage = () => {
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector(getUi);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [nameContent, setNameContent] = useState('');
-  const [priceContent, setPriceContent] = useState('');
-  const [sellContent, setSellContent] = useState('');
-  const [tagContent, setTagContent] = useState('lifestyle');
+  const [nameContent, setNameContent] = useState("");
+  const [priceContent, setPriceContent] = useState("");
+  const [sellContent, setSellContent] = useState("");
+  const [tagContent, setTagContent] = useState("lifestyle");
 
-  const handleChangeName = event => {
+  const handleChangeName = (event) => {
     setNameContent(event.target.value);
   };
 
-  const handleChangePrice = event => {
+  const handleChangePrice = (event) => {
     setPriceContent(event.target.value);
   };
 
-  const handleChangeSell = event => {
+  const handleChangeSell = (event) => {
     setSellContent(event.target.value);
   };
 
-  const handleChangeTag = event => {
+  const handleChangeTag = (event) => {
     setTagContent(event.target.value);
   };
 
   const isDisabled =
     !nameContent || !priceContent || !sellContent || !tagContent || isLoading;
 
-  const tags = getTags().then(tags => {
+  const tags = getTags().then((tags) => {
     return tags;
   });
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
 
     try {
-      setIsLoading(true);
-      const advert = await createAdvert(data, {
-        headers: { 'content-type': 'multipart/form-data' },
-      });
-      setIsLoading(false);
+      const advert = await dispatch(
+        advertCreate(data, {
+          headers: { "content-type": "multipart/form-data" },
+        })
+      );
       navigate(`/adverts/${advert.id}`);
     } catch (error) {
       if (error.status === 401) {
-        navigate('/login');
+        navigate("/login");
       }
     }
   };
 
-  const buttonText = isLoading ? 'Loading' : 'Submit!';
+  const buttonText = isLoading ? "Loading" : "Submit!";
 
   return (
     <Layout title="Publish your advert!">
       <div>
         <Form
           onSubmit={handleSubmit}
-          style={{ maxWidth: '500px' }}
+          style={{ maxWidth: "500px" }}
           className="mx-auto"
         >
           <Form.Group className="mb-3">

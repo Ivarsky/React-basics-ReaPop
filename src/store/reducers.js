@@ -1,6 +1,9 @@
 /* eslint-disable */
 import {
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_CREATED_SUCCESS,
+  ADVERT_DELETED_SUCCESS,
+  ADVERT_LOADED_SUCCESS,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   UI_RESET_ERROR,
@@ -39,12 +42,24 @@ export function adverts(state = defaultState.adverts, action) {
     };
   }
 
-  if (action.type === ADVERTS_LOADED_SUCCESS) {
+  if (action.type === ADVERT_LOADED_SUCCESS) {
     return {
       ...state,
       data: [action.payload],
     };
   }
+
+  if (action.type === ADVERT_CREATED_SUCCESS) {
+    return { ...state, data: [action.payload].concat(state.data) };
+  }
+
+  if (action.type === ADVERT_DELETED_SUCCESS) {
+    return {
+      ...state,
+      data: (action.payload = action.payload.filter(state.data)),
+    };
+  }
+
   return state;
 }
 
