@@ -16,6 +16,9 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
+  TAGS_LOAD_FAILURE,
+  TAGS_LOAD_REQUEST,
+  TAGS_LOAD_SUCCESS,
   UI_RESET_ERROR,
 } from "./types";
 
@@ -153,22 +156,48 @@ export const advertDeleteFailure = (error) => ({
   payload: error,
 });
 
-export const advertDeleteSucces = (advert) => ({
+export const advertDeleteSuccess = (advertId) => ({
   type: ADVERT_DELETED_SUCCESS,
-  payload: advert,
+  payload: advertId,
 });
 
 export const advertDelete =
-  (advert) =>
+  (advertId) =>
   async (dispatch, _getState, { adverts: advertsService }) => {
     dispatch(advertDeleteRequest());
     try {
-      await advertsService.deleteAdvert(advert);
-      dispatch(advertDeleteSucces);
+      await advertsService.deleteAdvert(advertId);
+      dispatch(advertDeleteSuccess(advertId));
     } catch (error) {
       dispatch(advertDeleteFailure(error));
+      console.log(error);
       throw error;
     }
+  };
+
+export const tagsLoadRequest = () => ({
+  type: TAGS_LOAD_REQUEST,
+});
+
+export const tagsLoadFailure = (error) => ({
+  type: TAGS_LOAD_FAILURE,
+  error: error,
+  payload: error,
+});
+
+export const tagsLoadSuccess = (tags) => ({
+  type: TAGS_LOAD_SUCCESS,
+  payload: tags,
+});
+
+export const tagsLoad =
+  () =>
+  async (dispatch, _getState, { adverts: advertsService }) => {
+    dispatch(tagsLoadRequest());
+    try {
+      const tags = await advertsService.getTags();
+      dispatch(tagsLoadSuccess());
+    } catch (error) {}
   };
 
 export const uiResetError = () => ({

@@ -54,9 +54,13 @@ export function adverts(state = defaultState.adverts, action) {
   }
 
   if (action.type === ADVERT_DELETED_SUCCESS) {
+    const deletedAdvert = state.data.findIndex(
+      (advert) => advert.id === action.payload
+    );
+
     return {
       ...state,
-      data: (action.payload = action.payload.filter(state.data)),
+      data: state.data.filter((advert) => advert.id !== action.payload),
     };
   }
 
