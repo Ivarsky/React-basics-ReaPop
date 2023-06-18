@@ -176,10 +176,13 @@ export const advertDelete =
     try {
       await service.adverts.deleteAdvert(advertId);
       dispatch(advertDeleteSuccess(advertId));
+      const to = "/";
+      router.navigate(to);
     } catch (error) {
       dispatch(advertDeleteFailure(error));
-      console.log(error);
-      throw error;
+      if (error.status === 404) {
+        router.navigate("/404");
+      }
     }
   };
 

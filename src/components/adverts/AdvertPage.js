@@ -11,30 +11,17 @@ import { advertDelete, advertLoad } from "../../store/actions";
 const AdvertPage = () => {
   const dispatch = useDispatch();
   const { advertId } = useParams();
-  //TODO: NAVIGATES DE SUBMIT
-  const navigate = useNavigate();
-  //const [error, setError] = useState(null);
-
   const [isLoading, setIsLoading] = useState(false);
   const advert = useSelector(getAdvert(advertId));
   const [showAlert, setShowAlert] = useState(false);
-  console.log(advert);
 
   useEffect(() => {
     dispatch(advertLoad(advertId));
   }, [dispatch, advertId]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      await dispatch(advertDelete(advertId));
-      const to = "/";
-      navigate(to);
-    } catch (error) {
-      if (error.status === 404) {
-        return navigate("/404");
-      }
-    }
+    dispatch(advertDelete(advertId));
     console.log(event);
   };
 

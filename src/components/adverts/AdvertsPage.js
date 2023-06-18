@@ -20,8 +20,6 @@ const EmptyList = () => (
 );
 
 const AdvertsPage = ({ adverts, onAdvertsLoaded, isLoading }) => {
-  const navigate = useNavigate();
-
   const [saleFilter, setSaleFilter] = useState(undefined);
   const [tagFilter, setTagFilter] = useState(undefined);
 

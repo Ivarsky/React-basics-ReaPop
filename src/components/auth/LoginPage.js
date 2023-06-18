@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogin, uiResetError } from "../../store/actions";
@@ -8,21 +8,22 @@ import { getUi } from "../../store/selectors";
 function LoginPage() {
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(getUi);
-  //TODO:borra esto
-  //const [isLoading, setIsLoading] = useState(false);
-  //const [error, setError] = useState(null);
+  const renders = useRef(0);
   const [checkBox, setCheckBox] = useState(false);
   // eslint-disable-next-line no-undef
+
+  useEffect(() => {
+    renders.current++;
+  });
+
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
   const loginProps = {
     credentials: credentials,
-    //TODO: mejor mete el checkBox en credentials
     checkbox: checkBox,
   };
-  console.log(loginProps);
 
   const resetError = () => {
     dispatch(uiResetError());
@@ -34,12 +35,6 @@ function LoginPage() {
   };
 
   const handleChange = (event) => {
-    // if (event.target.name === 'username'){
-    //   setCredentials({...credentials, username: event.target.value});
-    // }
-    // if (event.target.name === 'password') {
-    //   setCredentials({...credentials, password: event.target.value});
-    // }
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
