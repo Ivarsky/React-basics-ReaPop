@@ -1,63 +1,44 @@
-import { useState } from 'react';
-import { login } from './service';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { useEffect, useRef, useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { authLogin, uiResetError } from "../../store/actions";
+import { getUi } from "../../store/selectors";
 
 // eslint-disable-next-line react/prop-types
 function LoginPage() {
-  const { onLogin } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector(getUi);
+  const renders = useRef(0);
   const [checkBox, setCheckBox] = useState(false);
   // eslint-disable-next-line no-undef
+
+  useEffect(() => {
+    renders.current++;
+  });
+
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const loginProps = {
     credentials: credentials,
-    //TODO: mejor mete el checkBox en credentials
     checkbox: checkBox,
   };
-  console.log(loginProps);
 
   const resetError = () => {
-    setError(null);
+    dispatch(uiResetError());
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    resetError(), setIsLoading(true);
-    try {
-      await login(loginProps);
-      setIsLoading(false);
-      //Logged In
-      onLogin();
-      //Redirect to ultima pagina o home
-      const to = location.state?.from?.pathname || '/';
-      navigate(to);
-    } catch (error) {
-      setError(error);
-      setIsLoading(false);
-    }
+    dispatch(authLogin(loginProps));
   };
 
-  const handleChange = event => {
-    // if (event.target.name === 'username'){
-    //   setCredentials({...credentials, username: event.target.value});
-    // }
-    // if (event.target.name === 'password') {
-    //   setCredentials({...credentials, password: event.target.value});
-    // }
+  const handleChange = (event) => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   };
 
-  const handleCheckbox = event => {
+  const handleCheckbox = (event) => {
     const { checked } = event.target;
     setCheckBox(checked);
   };
@@ -70,7 +51,7 @@ function LoginPage() {
       <h1>Log in to your Account</h1>
       <Form
         onSubmit={handleSubmit}
-        style={{ maxWidth: '500px' }}
+        style={{ maxWidth: "500px" }}
         className="mx-auto"
       >
         <Form.Group className="mb-3" controlId="formGroupEmail">

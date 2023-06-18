@@ -1,11 +1,14 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 //import styles from './styles.module.css';
-import { getLatestAdverts } from './service';
-import { Button, Card, CardGroup, Spinner } from 'react-bootstrap';
-import Layout from '../Layout/Layout';
-import { Link, useNavigate } from 'react-router-dom';
-import placeholderPhoto from '../../assets/placeholder.png';
+import { Button, Card, CardGroup, Spinner } from "react-bootstrap";
+import Layout from "../Layout/Layout";
+import { Link, useNavigate } from "react-router-dom";
+import placeholderPhoto from "../../assets/placeholder.png";
+import { connect } from "react-redux";
+import { getAdverts, getUi } from "../../store/selectors";
+import { advertsLoaded } from "../../store/actions";
 
 const EmptyList = () => (
   <div>
@@ -16,39 +19,24 @@ const EmptyList = () => (
   </div>
 );
 
-const AdvertsPage = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [adverts, setAdverts] = useState([]);
+const AdvertsPage = ({ adverts, onAdvertsLoaded, isLoading }) => {
   const [saleFilter, setSaleFilter] = useState(undefined);
   const [tagFilter, setTagFilter] = useState(undefined);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const adverts = await getLatestAdverts();
-        setAdverts(adverts);
-      } catch (error) {
-        if (error.status === 401) {
-          navigate('/login');
-        }
-      }
-      setIsLoading(false);
-    }
-    fetchData();
-  }, []);
+    onAdvertsLoaded();
+  }, [onAdvertsLoaded]);
 
-  const handleChangeTagFilter = event => {
-    const value = event.target.value === 'All' ? undefined : event.target.value;
+  const handleChangeTagFilter = (event) => {
+    const value = event.target.value === "All" ? undefined : event.target.value;
     setTagFilter(value);
   };
 
   function filterAdverts(adverts, saleFilter, tagFilter) {
     return adverts.filter(
-      advert =>
+      (advert) =>
         (saleFilter === undefined || advert.sale === saleFilter) &&
-        (tagFilter === undefined || advert.tags[0] === tagFilter),
+        (tagFilter === undefined || advert.tags[0] === tagFilter)
     );
   }
   const filteredAdverts = filterAdverts(adverts, saleFilter, tagFilter);
@@ -68,14 +56,14 @@ const AdvertsPage = () => {
                   <input
                     type="radio"
                     name="filter"
-                    onChange={event => setSaleFilter(!!event.target.value)}
+                    onChange={(event) => setSaleFilter(!!event.target.value)}
                   />
 
                   <label>Buy</label>
                   <input
                     type="radio"
                     name="filter"
-                    onChange={event => setSaleFilter(!event.target.value)}
+                    onChange={(event) => setSaleFilter(!event.target.value)}
                   />
 
                   <label>All</label>
@@ -94,23 +82,23 @@ const AdvertsPage = () => {
                     onChange={handleChangeTagFilter}
                   >
                     <option value={undefined}>All</option>
-                    <option value={'lifestyle'}>Lifestyle</option>
-                    <option value={'mobile'}>Mobile</option>
-                    <option value={'motor'}>Motor</option>
-                    <option value={'work'}>Work</option>
+                    <option value={"lifestyle"}>Lifestyle</option>
+                    <option value={"mobile"}>Mobile</option>
+                    <option value={"motor"}>Motor</option>
+                    <option value={"work"}>Work</option>
                   </select>
                 </div>
               </div>
               <ul>
                 <div className="Advert">
                   <CardGroup>
-                    {filteredAdverts.map(advert => (
+                    {filteredAdverts.map((advert) => (
                       <Link
                         to={`/adverts/${advert.id}`}
-                        style={{ textDecoration: 'none' }}
+                        style={{ textDecoration: "none" }}
                         key={advert.id}
                       >
-                        <Card style={{ width: '18rem' }} className="mb-5 mx-2">
+                        <Card style={{ width: "18rem" }} className="mb-5 mx-2">
                           <Card.Img
                             variant="top"
                             src={advert.photo ? advert.photo : placeholderPhoto}
@@ -118,7 +106,7 @@ const AdvertsPage = () => {
                           <Card.Body>
                             <Card.Title>{advert.name}</Card.Title>
                             <Card.Text>
-                              {advert.sale ? 'Selling ' : 'Looking for '}
+                              {advert.sale ? "Selling " : "Looking for "}
                               {advert.name} at {advert.price} Eur
                               <br />
                               {`Tags: ${advert.tags}`}
@@ -139,4 +127,18 @@ const AdvertsPage = () => {
     </Layout>
   );
 };
-export default AdvertsPage;
+
+const mapStateToProps = (state) => ({
+  adverts: getAdverts(state),
+  ...getUi(state),
+});
+//TODO:borra comment
+//const mapDispatchToProps = dispatch => ({
+//  onAdvertsLoaded: adverts => dispatch(advertsLoaded(adverts))
+//});
+
+const mapDispatchToProps = {
+  onAdvertsLoaded: advertsLoaded,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdvertsPage);

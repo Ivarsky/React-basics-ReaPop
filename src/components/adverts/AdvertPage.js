@@ -1,51 +1,27 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import Layout from '../Layout/Layout';
-import { useEffect, useState } from 'react';
-import { deleteAdvert, getAdvert } from './service';
-import { Alert, Button, Card, Spinner } from 'react-bootstrap';
-import placeholderPhoto from '../../assets/placeholder.png';
+/* eslint-disable no-debugger */
+import { useNavigate, useParams } from "react-router-dom";
+import Layout from "../Layout/Layout";
+import { useEffect, useState } from "react";
+import { Alert, Button, Card, Spinner } from "react-bootstrap";
+import placeholderPhoto from "../../assets/placeholder.png";
+import { getAdvert } from "../../store/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { advertDelete, advertLoad } from "../../store/actions";
 
 const AdvertPage = () => {
-  const params = useParams();
-  const navigate = useNavigate();
-  //const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [advert, setAdvert] = useState(null);
+  const dispatch = useDispatch();
+  const { advertId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const advert = useSelector(getAdvert(advertId));
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        const advert = await getAdvert(params.advertId);
-        setAdvert(advert);
-        setIsLoading(false);
-      } catch (error) {
-        if (error.status === 404) {
-          return navigate('/404');
-        }
-        if (error.status === 401) {
-          return navigate('/login');
-        }
-        //setError(error);
-      }
-    }
-    fetchData();
-  }, [params.advertId, navigate]);
+    dispatch(advertLoad(advertId));
+  }, [dispatch, advertId]);
 
-  const handleSubmit = async event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    try {
-      setIsLoading(true);
-      await deleteAdvert(params.advertId);
-      setIsLoading(false);
-      const to = '/';
-      navigate(to);
-    } catch (error) {
-      if (error.status === 404) {
-        return navigate('/404');
-      }
-    }
+    dispatch(advertDelete(advertId));
     console.log(event);
   };
 
@@ -57,17 +33,17 @@ const AdvertPage = () => {
         <div className="d-flex justify-content-center mt-4">
           <Card
             className="d-flex align-items-center"
-            style={{ maxWidth: '500px' }}
+            style={{ maxWidth: "500px" }}
           >
             <Card.Img
               variant="top"
               src={advert.photo ? advert.photo : placeholderPhoto}
-              style={{ maxWidth: '400px' }}
+              style={{ maxWidth: "400px" }}
             />
             <Card.Body>
               <Card.Text>
-                {advert.sale ? 'Selling ' : 'Looking for '}{' '}
-                {`${advert.name} ${advert.sale ? ' at ' : ' offering '} ${
+                {advert.sale ? "Selling " : "Looking for "}{" "}
+                {`${advert.name} ${advert.sale ? " at " : " offering "} ${
                   advert.price
                 } euros, Tag: ${advert.tags}`}
               </Card.Text>
