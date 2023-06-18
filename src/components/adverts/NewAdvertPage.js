@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
@@ -9,7 +8,6 @@ import { getTags, getUi } from "../../store/selectors";
 const NewAdvertPage = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector(getUi);
-  const navigate = useNavigate();
   const [nameContent, setNameContent] = useState("");
   const [priceContent, setPriceContent] = useState("");
   const [sellContent, setSellContent] = useState("");
@@ -35,22 +33,14 @@ const NewAdvertPage = () => {
   const isDisabled =
     !nameContent || !priceContent || !sellContent || !tagContent || isLoading;
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-
-    try {
-      const advert = await dispatch(
-        advertCreate(data, {
-          headers: { "content-type": "multipart/form-data" },
-        })
-      );
-      navigate(`/adverts/${advert.id}`);
-    } catch (error) {
-      if (error.status === 401) {
-        navigate("/login");
-      }
-    }
+    dispatch(
+      advertCreate(data, {
+        headers: { "content-type": "multipart/form-data" },
+      })
+    );
   };
 
   const buttonText = isLoading ? "Loading" : "Submit!";

@@ -38,15 +38,17 @@ export const authLoginFailure = (error) => ({
 
 export const authLogin =
   (loginProps) =>
-  async (dispatch, _getState, { auth }) => {
+  async (dispatch, _getState, { service, router }) => {
     dispatch(authLoginRequest());
     try {
-      await auth.login(loginProps);
+      await service.auth.login(loginProps);
       //Logged In
       dispatch(authLoginSucces());
+      //Redirect to ultima pagina o home
+      const to = router.state.location.state?.from?.pathname || "/";
+      router.navigate(to);
     } catch (error) {
       dispatch(authLoginFailure(error));
-      throw error;
     }
   };
 
@@ -71,14 +73,14 @@ export const advertsLoadedFailure = (error) => ({
 
 export const advertsLoaded =
   () =>
-  async (dispatch, getState, { adverts: advertsService }) => {
+  async (dispatch, getState, { service }) => {
     if (areAdvertsLoaded(getState())) {
       return;
     }
 
     dispatch(advertsLoadedRequest());
     try {
-      const adverts = await advertsService.getLatestAdverts();
+      const adverts = await service.adverts.getLatestAdverts();
       dispatch(advertsLoadedSuccess(adverts));
     } catch (error) {
       dispatch(advertsLoadedFailure(error));
@@ -102,7 +104,7 @@ export const advertLoadedFailure = (error) => ({
 
 export const advertLoad =
   (advertId) =>
-  async (dispatch, getState, { adverts: advertsService }) => {
+  async (dispatch, getState, { service, router }) => {
     const isLoaded = getAdvert(advertId)(getState());
     if (isLoaded) {
       return;
@@ -110,11 +112,13 @@ export const advertLoad =
 
     dispatch(advertLoadedRequest());
     try {
-      const advert = await advertsService.getAdvert(advertId);
+      const advert = await service.adverts.getAdvert(advertId);
       dispatch(advertLoadedSuccess(advert));
     } catch (error) {
       dispatch(advertLoadedFailure(error));
-      throw error;
+      if (error.status === 404) {
+        return router.navigate("/404");
+      }
     }
   };
 
@@ -133,16 +137,20 @@ export const advertCreateSuccess = (advert) => ({
 
 export const advertCreate =
   (advert) =>
-  async (dispatch, _getState, { adverts: advertsService }) => {
+  async (dispatch, _getState, { service, router }) => {
     dispatch(advertCreateRequest());
     try {
-      const { id } = await advertsService.createAdvert(advert);
-      const createdAdvert = await advertsService.getAdvert(id);
+      const { id } = await service.adverts.createAdvert(advert);
+      const createdAdvert = await service.adverts.getAdvert(id);
       dispatch(advertCreateSuccess(createdAdvert));
+      router.navigate(`/adverts/${id}`);
+      console.log(`navigate to /adverts/${id}`);
       return createdAdvert;
     } catch (error) {
       dispatch(advertCreateFailure(error));
-      throw error;
+      if (error.status === 401) {
+        router.navigate("/login");
+      }
     }
   };
 
@@ -163,10 +171,10 @@ export const advertDeleteSuccess = (advertId) => ({
 
 export const advertDelete =
   (advertId) =>
-  async (dispatch, _getState, { adverts: advertsService }) => {
+  async (dispatch, _getState, { service }) => {
     dispatch(advertDeleteRequest());
     try {
-      await advertsService.deleteAdvert(advertId);
+      await service.adverts.deleteAdvert(advertId);
       dispatch(advertDeleteSuccess(advertId));
     } catch (error) {
       dispatch(advertDeleteFailure(error));
@@ -192,13 +200,13 @@ export const tagsLoadSuccess = (tags) => ({
 
 export const tagsLoad =
   () =>
-  async (dispatch, getState, { adverts: advertsService }) => {
+  async (dispatch, getState, { service }) => {
     if (areTagsLoaded(getState())) {
       return;
     }
     dispatch(tagsLoadRequest());
     try {
-      const tags = await advertsService.getTags();
+      const tags = await service.adverts.getTags();
       dispatch(tagsLoadSuccess(tags));
     } catch (error) {
       dispatch(tagsLoadFailure(error));

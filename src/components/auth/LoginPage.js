@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogin, uiResetError } from "../../store/actions";
@@ -8,8 +7,6 @@ import { getUi } from "../../store/selectors";
 // eslint-disable-next-line react/prop-types
 function LoginPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
   const { isLoading, error } = useSelector(getUi);
   //TODO:borra esto
   //const [isLoading, setIsLoading] = useState(false);
@@ -33,13 +30,7 @@ function LoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(authLogin(loginProps))
-      .then(() => {
-        //Redirect to ultima pagina o home
-        const to = location.state?.from?.pathname || "/";
-        navigate(to);
-      })
-      .catch((error) => console.log(error));
+    dispatch(authLogin(loginProps));
   };
 
   const handleChange = (event) => {

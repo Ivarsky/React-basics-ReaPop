@@ -12,9 +12,11 @@ const componseEnhancers = composeWithDevTools({
   actionCreators,
 });
 
-const middleware = [thunk.withExtraArgument({ auth, adverts })];
+export default function configureStore(preloadedState, { router }) {
+  const middleware = [
+    thunk.withExtraArgument({ service: { auth, adverts }, router }),
+  ];
 
-export default function configureStore(preloadedState) {
   const store = createStore(
     reducer,
     preloadedState,
